@@ -38,7 +38,7 @@ let hashUserPassword = (password) => {
 let getAllUser = async (req, res) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let users = db.User.findAll({
+            let users = await db.User.findAll({
                 raw: true,
             });
             resolve(users);
@@ -48,7 +48,49 @@ let getAllUser = async (req, res) => {
     })
 }
 
+let gerUserInfoById = (userId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let userData = await db.User.findOne({
+                where: { id: userId },
+                raw: true,
+            })
+            if (userData) {
+                resolve(userData);
+            } else {
+                resolve({});
+            }
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
+let updateUserData = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let user = await db.User.findOne({
+                where: { id: data.id }
+            })
+            if (user) {
+                user.firstName = data.firstName;
+                user.lastName = data.lastName;
+                user.address = data.address;
+                await user.save();
+                let allUser = await db.User.findAll();
+                resolve(allUser);
+            } else {
+                resolve();
+            }
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
 module.exports = {
     createNewUser: createNewUser,
     getAllUser: getAllUser,
+    gerUserInfoById: gerUserInfoById,
+    updateUserData: updateUserData
 }

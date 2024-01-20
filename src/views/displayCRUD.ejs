@@ -16,6 +16,7 @@
                 <th scope="col">Email</th>
                 <th scope="col">First Name</th>
                 <th scope="col">Last Name</th>
+                <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -32,6 +33,10 @@
                     </td>
                     <td>
                         <%= dataTable[i].lastName %>
+                    </td>
+                    <td>
+                        <a href="/edit-crud?id=<%= dataTable[i].id %>" class="btn btn-primary" type="button">Edit</a>
+                        <a class="btn btn-danger" type="button">Delete</a>
                     </td>
                 </tr>
                 <% } %>
